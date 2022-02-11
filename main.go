@@ -96,7 +96,7 @@ func (d *Driver) Write(collection string, resource string, value interface{}) er
 
 func (d *Driver) Read(collection string, resource string, value interface{}) error {
 	if collection == "" {
-		return fmt.Errorf("Missing collection - no place to save record")
+		return fmt.Errorf("Missing collection - unable to read")
 	}
 	if resource == "" {
 		return fmt.Errorf("Missing resource - unable to save record (no name)")
@@ -114,12 +114,47 @@ func (d *Driver) Read(collection string, resource string, value interface{}) err
 	return json.Unmarshal(b, &value)
 }
 
-func (d *Driver) ReadAll() {
+func (d *Driver) ReadAll(collection string) ([]string, error) {
+	if collection == "" {
+		return nil, fmt.Errorf("Missing collection - unable to read")
+	}
+	dir := filepath.Join(d.dir, collection)
 
+	if _, err := stat(dir); err != nil {
+		return nil, err
+	}
+	file, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	var records []string
+	for _, x := range file {
+		data, err := ioutil.ReadFile(filepath.Join(dir, x.Name()))
+		if err != nil {
+			return nil, err
+		}
+		records = append(records, string(data))
+	}
+	return records, nil
 }
 
-func (d *Driver) Delete() error {
+func (d *Driver) Delete(collection string, resource string) error {
+	path := filepath.Join(collection, resource)
+	mutex := d.getOrCreateMutex(collection)
+	mutex.Lock()
+	defer mutex.Unlock()
 
+	dir := filepath.Join(d.dir, path)
+
+	switch fi, err := stat(dir); {
+	case fi == nil, err != nil:
+		return fmt.Errorf("unable to find file or directory named %v\n", path)
+	case fi.Mode().IsDir():
+		return os.RemoveAll(dir)
+	case fi.Mode().IsRegular():
+		return os.RemoveAll(dir + ".json")
+	}
+	return nil
 }
 
 func (d *Driver) getOrCreateMutex(collection string) *sync.Mutex {
@@ -168,7 +203,7 @@ func main() {
 
 	// use of write one function
 	for _, value := range employees {
-		db.write("users", value.Name, User{
+		db.Write("users", value.Name, User{
 			Name:    value.Name,
 			Age:     value.Age,
 			Contact: value.Contact,
@@ -195,11 +230,11 @@ func main() {
 	}
 	fmt.Println(allusers)
 
-	// if err := db.Delete("user", "Jhon"); err != nil {
-	// 	fmt.Println("Error ", err)
-	// }
+	if err := db.Delete("users", "Rohan"); err != nil {
+		fmt.Println("Error ", err)
+	}
 
-	// if err := db.Delete("user", ""); err != nil {
+	// if err := db.Delete("users", ""); err != nil {
 	// 	fmt.Println("Error ", err)
 	// }
 

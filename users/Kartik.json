@@ -1,0 +1,12 @@
+{
+	"Name": "Kartik",
+	"Age": 21,
+	"Contact": "2929292",
+	"Company": "URI",
+	"Address": {
+		"City": "indore",
+		"State": "karnatak",
+		"Country": "india",
+		"Pincode": 433221
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"Name": "Ravi",
+	"Age": 25,
+	"Contact": "2929292",
+	"Company": "My tech",
+	"Address": {
+		"City": "banglore",
+		"State": "karnatak",
+		"Country": "india",
+		"Pincode": 433221
+	}
+}

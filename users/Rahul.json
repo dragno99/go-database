@@ -1,0 +1,12 @@
+{
+	"Name": "Rahul",
+	"Age": 24,
+	"Contact": "2929292",
+	"Company": "Gojek",
+	"Address": {
+		"City": "delhi",
+		"State": "karnatak",
+		"Country": "india",
+		"Pincode": 433221
+	}
+}

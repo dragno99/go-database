@@ -1,0 +1,12 @@
+{
+	"Name": "Nitin",
+	"Age": 21,
+	"Contact": "2929292",
+	"Company": "War",
+	"Address": {
+		"City": "pune",
+		"State": "karnatak",
+		"Country": "india",
+		"Pincode": 433221
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"Name": "Shivam",
+	"Age": 23,
+	"Contact": "2929292",
+	"Company": "Apple",
+	"Address": {
+		"City": "chennai",
+		"State": "karnatak",
+		"Country": "india",
+		"Pincode": 433221
+	}
+}

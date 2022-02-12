@@ -5,7 +5,7 @@ It stores data in the form of json document.
 
 I have also used mutex in this to solve data inconsistency issues.
 
-It consits of 5 basics operation :
+It consists of 5 basics operation :
 
 1 ) - Create a new driver ( similar as mongodb )
 
